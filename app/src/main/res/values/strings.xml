@@ -1,0 +1,8 @@
+<resources>
+    <string name="app_name">TensorFlowAndroid</string>
+    <string name="description_info">Info</string>
+    <string name="request_permission">This sample needs camera permission.</string>
+    <string name="camera_error">This device doesn\'t support Camera2 API.</string>
+    <string name="camera_put_ID_in_the_box">请将身份证放在取景框内</string>
+    <string name="btn_reg_continue">继续识别</string>
+</resources>
