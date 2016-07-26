@@ -72,4 +72,5 @@ include /home/centos/sdk/OpenCV-android-sdk/sdk/native/jni/OpenCV.mk
 ![执行过程](./img/command.png)
 
 #examples
+手机截图，红米3. Android 5 以上设备均支持
 ![my Id](./img/result.png)
