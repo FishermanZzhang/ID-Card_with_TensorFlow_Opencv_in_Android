@@ -61,7 +61,7 @@ include /home/centos/sdk/OpenCV-android-sdk/sdk/native/jni/OpenCV.mk
 ```
 
 # use it
-[这是我的Android Studio](./img/as.png)
+![这是我的Android Studio](./img/as.png)
 
 执行ndk-build. 这里使用make包装了一下。
 
@@ -69,4 +69,4 @@ make  && make install
 
 真正的命令可以在[Makefile](./jni-build/Makefile)中查看
 
-[执行过程](./img/command.png)
+![执行过程](./img/command.png)
