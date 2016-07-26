@@ -222,8 +222,8 @@ static std::string ClassifyImage(const cv::Mat& src) {
 					g_tensorflow_input_width_size*g_tensorflow_input_height_size}));
 	auto input_tensor_mapped = input_tensor.tensor<float, 2>();
 	LOG(INFO) << "TensorFlow: Copying Data.";
-
-	for (size_t index = std::max(0, (int) blocks.size() - NUMID);
+    int start = std::max(0, (int) blocks.size() - NUMID);
+	for (size_t index = start;
 			index < blocks.size(); ++index) {
 		cv::Mat stdBlock;
 		cv::resize(items[0](blocks[index]), stdBlock,
@@ -236,7 +236,7 @@ static std::string ClassifyImage(const cv::Mat& src) {
 			const uchar* imgptr = stdBlock.ptr<uchar>(i);
 			for (int j = 0; j < g_tensorflow_input_width_size; ++j) {
 				// Copy 1 values
-				input_tensor_mapped(index, i *g_tensorflow_input_width_size +  j) = imgptr[j] / 255.0;
+				input_tensor_mapped(index - start, i *g_tensorflow_input_width_size +  j) = imgptr[j] / 255.0;
 			}
 		}
 	}
@@ -273,7 +273,7 @@ static std::string ClassifyImage(const cv::Mat& src) {
 				max_score = score;
 			}
 		}
-		if(maxIndex < 0 || maxIndex >11){
+		if(maxIndex < 0 || maxIndex >12){
 		    maxIndex = 0;
 		}
 		LOG(INFO) << "label " << maxIndex;

@@ -25,11 +25,11 @@ public class ImageListener implements OnImageAvailableListener {
     Image image;
     Bitmap bitmap;
 
-    private static final int NUM_CLASSES = 10;
-    private static final int INPUT_SIZE = 28;
-    private static final String INPUT_NAME = "input:0";
-    private static final String OUTPUT_NAME = "output:0";
-    private static final String MODEL_FILE = "file:///android_asset/beginner-graph.pb";
+    private static final int NUM_CLASSES = 11;
+    private static final int INPUT_SIZE = 32;
+    private static final String INPUT_NAME = "input";
+    private static final String OUTPUT_NAME = "output";
+    private static final String MODEL_FILE = "file:///android_asset/expert-graph.pb";
 
     private final TensorFlowClassifier tensorflow = new TensorFlowClassifier();
     private boolean computing = false;
