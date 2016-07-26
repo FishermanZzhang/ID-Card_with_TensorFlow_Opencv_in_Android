@@ -8,7 +8,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 
 /**
- * Created by zczhang on 16/7/24.
+ * Created by zzhang on 16/7/24.
  */
 public class Utils {
     public static boolean saveBitmap2File(Bitmap bitmap, String filePath, String fileName) {

@@ -22,7 +22,9 @@ public class TensorFlowClassifier {
     public native String classifyImageBmp(Bitmap bitmap);
 
     public native String classifyImageRgb(int[] output, int width, int height);
-    public native String classifyImageYUV(byte[] input, int width, int hegiht );
+    public native String classifyImageYUV(byte[] y, byte[] u, byte[] v,
+                                          int width, int hegiht ,
+                                          int yRowStride, int uvRowStride, int uvPixelStride);
 
 
     static {

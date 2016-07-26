@@ -17,7 +17,7 @@ import android.widget.TextView;
 /**
  * 识别结果页面
  * <p>
- * Created by zczhang on 16/7/24.
+ * Created by zzhang on 16/7/24.
  */
 public class RegResultFragment extends Fragment {
     private TextView tvIds;
