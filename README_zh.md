@@ -70,3 +70,6 @@ include /home/centos/sdk/OpenCV-android-sdk/sdk/native/jni/OpenCV.mk
 ####4 make install
 
 ![执行过程](./img/command.png)
+
+#examples
+![my Id](./img/result.png)
