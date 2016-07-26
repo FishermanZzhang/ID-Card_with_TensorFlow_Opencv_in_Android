@@ -4,7 +4,7 @@ ID-Card_with_TensorFlow_Opencv_in_Android
 # Environment
 ####1 centos 7
 ####2 [android studio](http://pan.baidu.com/s/1o8yB1wu)
-####3 [NDK r10e](http://pan.baidu.com/s/1pLlImtt) [NDK r12](http://pan.baidu.com/s/1eSr0kLW)
+####3 [NDK r10e](http://pan.baidu.com/s/1pLlImtt)(推荐) or [NDK r12](http://pan.baidu.com/s/1eSr0kLW)
 ####4 SDK
 ####5 JDK 1.8
 
@@ -63,11 +63,10 @@ include /home/centos/sdk/OpenCV-android-sdk/sdk/native/jni/OpenCV.mk
 # use it
 ![这是我的Android Studio](./img/as.png)
 
-执行ndk-build. 这里使用make包装了一下。
+执行ndk-build. 这里使用make包装了一下。真正的命令可以在[Makefile](./jni-build/Makefile)中查看
 ####1 open Terminal
 ####2 cd jni-build
 ####3 make
 ####4 make install
-真正的命令可以在[Makefile](./jni-build/Makefile)中查看
 
 ![执行过程](./img/command.png)
