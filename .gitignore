@@ -1,4 +1,10 @@
 *.iml
+*.exe
+*.lo
+*.so
+*.a
+*.o
+*.o.d
 .gradle
 /local.properties
 /.idea/workspace.xml
@@ -6,9 +12,3 @@
 .DS_Store
 /build
 /captures
-*.exe
-*.lo
-*.so
-*.a
-*.o
-*.o.d
