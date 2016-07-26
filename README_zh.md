@@ -10,7 +10,7 @@ ID-Card_with_TensorFlow_Opencv_in_Android
 
 
 # download tensorflow-sdk and opencv-sdk
-####1 可以直接下载[tensorflow-sdk]() 
+####1 可以直接下载[tensorflow-sdk](http://pan.baidu.com/s/1jHQTDkE) 
 也可以自己编译tensorflow android "static lib". 步骤如下：
 
 按照[tensorflow_android](https://github.com/tensorflow/tensorflow/blob/master/tensorflow/examples/android/README.md)说明执行，并安装bazel等。
@@ -49,7 +49,7 @@ config_setting(
 ####3 仔细阅读Opencv.mk 和 tensorflow_android.mk
 tensorflow_android.mk这个是我写的，可能有bug,在arm平台是没有问题的
 
-####4 Android.mk(https://github.com/fishermanzhangzhen/ID-Card_with_TensorFlow_Opencv_in_Android/blob/master/jni-build/jni/Android.mk)
+####4 [Android.mk](./jni-build/jni/Android.mk)
 修改 opencv-sdk 和 tensorflow-sdk .mk 的包含目录
 ```
 #this is my path, change it to yours
@@ -61,3 +61,12 @@ include /home/centos/sdk/OpenCV-android-sdk/sdk/native/jni/OpenCV.mk
 ```
 
 # use it
+[这是我的Android Studio](./img/as.png)
+
+执行ndk-build. 这里使用make包装了一下。
+
+make  && make install
+
+真正的命令可以在[Makefile](./jni-build/Makefile)中查看
+
+[执行过程](./img/command.png)
