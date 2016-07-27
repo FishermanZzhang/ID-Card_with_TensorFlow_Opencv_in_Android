@@ -24,6 +24,13 @@ public class ImageListener implements OnImageAvailableListener {
     private Integer sensorOrientation;
     Image image;
     Bitmap bitmap;
+    private byte[][] yuvBytes;
+    private int[] rgbBytes = null;
+    private int yRowStride = 0;
+    private int uvRowStride = 0;
+    private int uvPixelStride = 0;
+    private int previewWidth = 0;
+    private int previewHeight = 0;
 
     private static final int NUM_CLASSES = 11;
     private static final int INPUT_SIZE = 32;
@@ -60,6 +67,9 @@ public class ImageListener implements OnImageAvailableListener {
         this.handler = handler;
         this.sensorOrientation = sensorOrientation;
     }*/
+    private boolean isLegitimateids(String ids){
+        return ids.length() == 18;
+    }
 
     @Override
     public void onImageAvailable(final ImageReader reader) {
@@ -76,6 +86,7 @@ public class ImageListener implements OnImageAvailableListener {
                 return;
             }
             computing = true;
+            /*
             Image.Plane[] planes = image.getPlanes();
             int hi = image.getHeight();
             int wi = image.getWidth();
@@ -101,7 +112,22 @@ public class ImageListener implements OnImageAvailableListener {
                     offset += pixelStride;
                 }
                 offset += rowPadding;
+            }*/
+            previewWidth = image.getWidth();
+            previewHeight = image.getHeight();
+
+            final Image.Plane[] planes = image.getPlanes();
+            yuvBytes = new byte[planes.length][];
+            for (int i = 0; i < planes.length; ++i) {
+                yuvBytes[i] = new byte[planes[i].getBuffer().capacity()];
             }
+            for (int i = 0; i < planes.length; ++i) {
+                planes[i].getBuffer().get(yuvBytes[i]);
+            }
+            yRowStride = planes[0].getRowStride();
+            uvRowStride = planes[1].getRowStride();
+            uvPixelStride = planes[1].getPixelStride();
+
 //            Trace.beginSection("imageAvailable");
             //int rowPadding = rowStride - pixelStride * mWidth;
             //bitmap = Bitmap.createBitmap()
@@ -134,18 +160,35 @@ public class ImageListener implements OnImageAvailableListener {
                         //computing = false;
                         //Log.d(TAG, "run: ");
 
-                        System.out.println("bitmap height" + bitmap.getHeight());
-                        String ids = tensorflow.classifyImageBmp(bitmap);
+                        //System.out.println("bitmap height" + bitmap.getHeight());
+                        //String ids = tensorflow.classifyImageBmp(bitmap);
                         //String ids = tensorflow.classifyImageBmp(bytes, image.getWidth(), image.getHeight());
+                        String ids = tensorflow.classifyImageYUV(yuvBytes[0],yuvBytes[1], yuvBytes[2],
+                                previewWidth,previewHeight,
+                                yRowStride, uvRowStride, uvPixelStride);
                         System.out.println(ids);
                         computing = false;
-                        if (ids.length() != 18) {
+                        if (!isLegitimateids(ids)) {
                             return;
                         }
                         computeSuccess = true;
-//                        Utils.saveBitmap2File(bitmap, mFilePath, imageFileName);
+//                        ImageUtils.saveBitmap2File(bitmap, mFilePath, imageFileName);
 
                         //final Activity activity = getActivity();
+                        rgbBytes= new int[previewWidth* previewHeight];
+                        Log.i(TAG, "run: previewWidth :" + previewWidth + ",previewHeight:" +  previewHeight);
+                        bitmap = Bitmap.createBitmap(previewWidth, previewHeight, Config.ARGB_8888);
+                        ImageUtils.convertYUV420ToARGB8888(
+                                yuvBytes[0],
+                                yuvBytes[1],
+                                yuvBytes[2],
+                                rgbBytes,
+                                previewWidth,
+                                previewHeight,
+                                yRowStride,
+                                uvRowStride,
+                                uvPixelStride);
+                        bitmap.setPixels(rgbBytes, 0, previewWidth, 0, 0, previewWidth, previewHeight);
                         fragment.setResult(ids, bitmap);
                     }
                 });

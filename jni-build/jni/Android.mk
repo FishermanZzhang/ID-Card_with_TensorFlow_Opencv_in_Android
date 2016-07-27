@@ -14,7 +14,9 @@ include /home/centos/sdk/tensorflow-sdk/sdk/native/jni/tensorflow_android.mk
 LOCAL_SRC_FILES := ./tensorflow_jni.cc \
 	./jni_utils.cc \
 	./LSDDetectEdge.cc \
-	./DetectEdge.cc
+	./DetectEdge.cc \
+	./yuv2rgb.cc \
+	./imageutils_jni.cc
 
 LOCAL_MODULE := tensorflow_ocr
 LOCAL_ARM_MODE  := arm

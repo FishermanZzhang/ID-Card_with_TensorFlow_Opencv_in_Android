@@ -47,8 +47,13 @@ static std::unique_ptr<LSDDetectEdge> detector;
 static std::unique_ptr<std::string> g_input_name;
 static std::unique_ptr<std::string> g_output_name;
 //static std::unique_ptr<StatSummarizer> g_stats;
+static const int kMaxChannelValue = 262143;
 
-const int NUMID = 18;
+static const int NUMID = 18;
+#ifndef MAX
+#define MAX(a, b) ({__typeof__(a) _a = (a); __typeof__(b) _b = (b); _a > _b ? _a : _b; })
+#define MIN(a, b) ({__typeof__(a) _a = (a); __typeof__(b) _b = (b); _a < _b ? _a : _b; })
+#endif
 
 // For basic benchmarking.
 static int g_num_runs = 0;
@@ -149,6 +154,9 @@ JNIEXPORT jint JNICALL Java_com_example_centos_tensorflowandroid_TensorFlowClass
 
 static void line2blocks(cv::Mat& line, std::vector<cv::Rect>& blocks) {
     cv::Mat bin;
+    if(line.channels() == 3){
+      cv::cvtColor(line, line,CV_BGR2GRAY);
+    }
     cv::threshold(line, bin, 0, 255, CV_THRESH_BINARY_INV | CV_THRESH_OTSU);
     vector<vector<cv::Point>> pointss;
     cv::findContours(bin, pointss, CV_RETR_EXTERNAL, CV_CHAIN_APPROX_SIMPLE);
@@ -195,16 +203,19 @@ static std::string ClassifyImage(const cv::Mat& src) {
 
 	++g_num_runs;
 
-	cv::Mat gray_image;
+	cv::Mat image;
 	if (src.channels() == 4) {
-		cv::cvtColor(src, gray_image, CV_RGBA2GRAY);
+		cv::cvtColor(src, image, CV_RGBA2GRAY);
 	} else if (src.channels() == 3) {
-		cv::cvtColor(src, gray_image, CV_RGB2GRAY);
+		//cv::cvtColor(src, gray_image, CV_RGB2GRAY);
+		image = src.clone();
 	} else {
-		gray_image = src.clone();
+		image = src.clone();
 	}
 	vector<cv::Mat> items;
-	detector->detect(gray_image, items);
+	LOG(INFO) << "detecting";
+	detector->detect(image, items);
+	LOG(INFO) << "detect over";
 	if(items.size() <= 0){
 	    return std::string("@");
 	}
@@ -336,4 +347,73 @@ JNIEXPORT jstring JNICALL Java_com_example_centos_tensorflowandroid_TensorFlowCl
 	return env->NewStringUTF(result.c_str());
 
 }
+
+
+static inline uint32 YUV2RGB(int nY, int nU, int nV) {
+	nY -= 16;
+	nU -= 128;
+	nV -= 128;
+	if (nY < 0) nY = 0;
+
+	// This is the floating point equivalent. We do the conversion in integer
+	// because some Android devices do not have floating point in hardware.
+	// nR = (int)(1.164 * nY + 2.018 * nU);
+	// nG = (int)(1.164 * nY - 0.813 * nV - 0.391 * nU);
+	// nB = (int)(1.164 * nY + 1.596 * nV);
+
+	int nR = (int)(1192 * nY + 1634 * nV);
+	int nG = (int)(1192 * nY - 833 * nV - 400 * nU);
+	int nB = (int)(1192 * nY + 2066 * nU);
+
+	nR = MIN(kMaxChannelValue, MAX(0, nR));
+	nG = MIN(kMaxChannelValue, MAX(0, nG));
+	nB = MIN(kMaxChannelValue, MAX(0, nB));
+
+	nR = (nR >> 10) & 0xff;
+	nG = (nG >> 10) & 0xff;
+	nB = (nB >> 10) & 0xff;
+
+	return 0xff000000 | (nR << 16) | (nG << 8) | nB;
+}
+
+/*
+ * Class:     com_example_centos_tensorflowandroid_TensorFlowClassifier
+ * Method:    classifyImageYUV
+ * Signature: ([B[B[BIIIII)Ljava/lang/String;
+ */
+JNIEXPORT jstring JNICALL Java_com_example_centos_tensorflowandroid_TensorFlowClassifier_classifyImageYUV
+  (JNIEnv * env, jobject thiz,
+  jbyteArray Y, jbyteArray U, jbyteArray V,
+  jint width, jint height,
+  jint y_row_stride, jint uv_row_stride, jint uv_pixel_stride){
+
+    const uint8* yData = (uint8*)env->GetByteArrayElements(Y, NULL);
+    const uint8* uData = (uint8*)env->GetByteArrayElements(U, NULL);
+    const uint8* vData = (uint8*)env->GetByteArrayElements(V, NULL);
+    // YUV420 to BGR
+    Mat srcImage(height, width, CV_8UC3);
+  	for (int y = 0; y < height; y++) {
+  		const uint8* pY = yData + y_row_stride * y;
+  		const int uv_row_start = uv_row_stride * (y >> 1);
+  		const uint8* pU = uData + uv_row_start;
+  		const uint8* pV = vData + uv_row_start;
+  		cv::Vec3b* data = srcImage.ptr<cv::Vec3b>(y);
+  		for (int x = 0; x < width; x++) {
+  			const int uv_offset = (x >> 1) * uv_pixel_stride;
+  			int ABGR= YUV2RGB(pY[x], pU[uv_offset], pV[uv_offset]);
+  			data[x][0] = ABGR & 0xff;
+  			data[x][1] = (ABGR & 0xff00) >> 8;
+  			data[x][2] = (ABGR & 0xff0000) >> 16;
+  		}
+  	}
+
+    std::string result = ClassifyImage(srcImage);
+    env->ReleaseByteArrayElements(Y, (jbyte*)yData, 0);
+    env->ReleaseByteArrayElements(U, (jbyte*)uData, 0);
+    env->ReleaseByteArrayElements(V, (jbyte*)vData, 0);
+    return env->NewStringUTF(result.c_str());
+
+
+
+  }
 

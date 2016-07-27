@@ -31,6 +31,14 @@ JNIEXPORT jstring JNICALL Java_com_example_centos_tensorflowandroid_TensorFlowCl
 JNIEXPORT jstring JNICALL Java_com_example_centos_tensorflowandroid_TensorFlowClassifier_classifyImageRgb
   (JNIEnv *, jobject, jintArray, jint, jint);
 
+
+/*
+ * Class:     com_example_centos_tensorflowandroid_TensorFlowClassifier
+ * Method:    classifyImageYUV
+ * Signature: ([B[B[BIIIII)Ljava/lang/String;
+ */
+JNIEXPORT jstring JNICALL Java_com_example_centos_tensorflowandroid_TensorFlowClassifier_classifyImageYUV
+  (JNIEnv *, jobject, jbyteArray, jbyteArray, jbyteArray, jint, jint, jint, jint, jint);
 #ifdef __cplusplus
 }
 #endif
