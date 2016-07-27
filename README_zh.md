@@ -1,5 +1,7 @@
 ID-Card_with_TensorFlow_Opencv_in_Android
 ==============================
+##涉及技术或者开源库
+![t](./img/t.png)
 
 # Environment
 ####1 centos 7
