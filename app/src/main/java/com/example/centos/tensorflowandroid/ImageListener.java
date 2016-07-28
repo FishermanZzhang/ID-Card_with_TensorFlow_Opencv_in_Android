@@ -218,7 +218,7 @@ public class ImageListener implements OnImageAvailableListener {
                         //Log.i(TAG, "run: setPixels");
                         //Log.i(TAG, "run:call back"  + Thread.currentThread().getName());
                         fragment.setResult(ids, bitmap);
-                        computeSuccess= false;
+                        //computeSuccess= false;
                     }
                 });
     }

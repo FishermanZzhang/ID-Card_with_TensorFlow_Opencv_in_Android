@@ -222,6 +222,7 @@ static std::string ClassifyImage(const cv::Mat& src) {
 	}
 	vector<cv::Rect> blocks;
 	//cv::Mat& line = items[0];
+	imwrite("./line.jpg", items[0]);
 	line2blocks(items[0], blocks);
 
 	if (blocks.size() < NUMID) {
