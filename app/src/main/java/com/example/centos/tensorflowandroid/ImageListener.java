@@ -67,8 +67,21 @@ public class ImageListener implements OnImageAvailableListener {
         this.handler = handler;
         this.sensorOrientation = sensorOrientation;
     }*/
+    private final int[] Wi = {7, 9 , 10, 5, 8, 4, 2, 1,6,3, 7, 9,10, 5,8,4,2};
+    private final char[] indexTable = {'1','0', 'X', '9', '8', '7', '6','5', '4', '3', '2' };
+    private final int idslen = 18;
     private boolean isLegitimateids(String ids){
-        return ids.length() == 18;
+        if(ids.length() != idslen){
+            return false;
+        }
+        int tsum = 0;
+        for(int i = 0; i < idslen - 1; ++i){
+            if(ids.charAt(i) == 'X') return false;
+            tsum += Wi[i] * (ids.charAt(i) - '0');
+        }
+        tsum %= 11;
+        return indexTable[tsum] == ids.charAt(idslen - 1);
+
     }
 
     @Override
