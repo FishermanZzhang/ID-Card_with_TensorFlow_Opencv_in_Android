@@ -4,6 +4,9 @@
 
 #include "yuv2rgb.h"
 
+//stupid include
+#include "tensorflow/core/platform/logging.h"
+
 #ifndef MAX
 #define MAX(a, b) ({__typeof__(a) _a = (a); __typeof__(b) _b = (b); _a > _b ? _a : _b; })
 #define MIN(a, b) ({__typeof__(a) _a = (a); __typeof__(b) _b = (b); _a < _b ? _a : _b; })
@@ -49,6 +52,7 @@ void ConvertYUV420ToARGB8888(const uint8* const yData, const uint8* const uData,
                              const int width, const int height,
                              const int y_row_stride, const int uv_row_stride,
                              const int uv_pixel_stride) {
+  LOG(INFO) <<" YUV420 -> RGBA8888";
   uint32* out = output;
 
   for (int y = 0; y < height; y++) {

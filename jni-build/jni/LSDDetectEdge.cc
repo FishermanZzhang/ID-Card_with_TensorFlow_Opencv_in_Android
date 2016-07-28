@@ -1,6 +1,9 @@
 #include "LSDDetectEdge.h"
 #include <string>
 
+//stupid include
+#include "tensorflow/core/platform/logging.h"
+
 // those param should in optial.h
 
 LSDDetectEdge::LSDDetectEdge(){

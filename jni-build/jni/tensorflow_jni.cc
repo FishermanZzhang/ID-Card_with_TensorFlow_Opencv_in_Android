@@ -197,8 +197,9 @@ static std::string ClassifyImage(const cv::Mat& src) {
 		LOG(INFO) << "Benchmark complete. "
 				<< (g_timing_total_us / g_num_runs / 1000) << "ms/run avg over "
 				<< g_num_runs << " runs.";
-		LOG(INFO) << "";
-		exit(0);
+		LOG(INFO) << "more runing";
+		//exit(0);
+		return "!";
 	}
 
 	++g_num_runs;
@@ -287,7 +288,7 @@ static std::string ClassifyImage(const cv::Mat& src) {
 		if(maxIndex < 0 || maxIndex >12){
 		    maxIndex = 0;
 		}
-		LOG(INFO) << "label " << maxIndex;
+		//LOG(INFO) << "label " << maxIndex;
 		result += label2char[maxIndex];
 	}
 	LOG(INFO) << result;

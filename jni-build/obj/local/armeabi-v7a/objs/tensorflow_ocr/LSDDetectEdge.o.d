@@ -60,7 +60,13 @@ obj/local/armeabi-v7a/objs/tensorflow_ocr/./LSDDetectEdge.o: \
  /home/centos/sdk/OpenCV-android-sdk/sdk/native/jni/include/opencv2/videoio/videoio_c.h \
  /home/centos/sdk/OpenCV-android-sdk/sdk/native/jni/include/opencv2/ml.hpp \
  /home/centos/Android/android-ndk-r12b/sources/cxx-stl/gnu-libstdc++/4.9/include/map \
- /home/centos/Android/android-ndk-r12b/sources/cxx-stl/gnu-libstdc++/4.9/include/iostream
+ /home/centos/Android/android-ndk-r12b/sources/cxx-stl/gnu-libstdc++/4.9/include/iostream \
+ /home/centos/sdk/tensorflow-sdk/sdk/native/jni/include/tensorflow/core/platform/logging.h \
+ /home/centos/sdk/tensorflow-sdk/sdk/native/jni/include/tensorflow/core/platform/platform.h \
+ /home/centos/sdk/tensorflow-sdk/sdk/native/jni/include/tensorflow/core/platform/default/logging.h \
+ /home/centos/sdk/tensorflow-sdk/sdk/native/jni/include/tensorflow/core/platform/macros.h \
+ /home/centos/sdk/tensorflow-sdk/sdk/native/jni/include/tensorflow/core/platform/types.h \
+ /home/centos/sdk/tensorflow-sdk/sdk/native/jni/include/tensorflow/core/platform/default/integral_types.h
 
 jni/./LSDDetectEdge.h:
 
@@ -187,3 +193,15 @@ jni/./DetectEdge.h:
 /home/centos/Android/android-ndk-r12b/sources/cxx-stl/gnu-libstdc++/4.9/include/map:
 
 /home/centos/Android/android-ndk-r12b/sources/cxx-stl/gnu-libstdc++/4.9/include/iostream:
+
+/home/centos/sdk/tensorflow-sdk/sdk/native/jni/include/tensorflow/core/platform/logging.h:
+
+/home/centos/sdk/tensorflow-sdk/sdk/native/jni/include/tensorflow/core/platform/platform.h:
+
+/home/centos/sdk/tensorflow-sdk/sdk/native/jni/include/tensorflow/core/platform/default/logging.h:
+
+/home/centos/sdk/tensorflow-sdk/sdk/native/jni/include/tensorflow/core/platform/macros.h:
+
+/home/centos/sdk/tensorflow-sdk/sdk/native/jni/include/tensorflow/core/platform/types.h:
+
+/home/centos/sdk/tensorflow-sdk/sdk/native/jni/include/tensorflow/core/platform/default/integral_types.h:

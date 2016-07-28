@@ -190,7 +190,19 @@ public class ImageListener implements OnImageAvailableListener {
                         //final Activity activity = getActivity();
                         rgbBytes= new int[previewWidth* previewHeight];
                         Log.i(TAG, "run: previewWidth :" + previewWidth + ",previewHeight:" +  previewHeight);
+                        Log.i(TAG, "run: createBitmap");
                         bitmap = Bitmap.createBitmap(previewWidth, previewHeight, Config.ARGB_8888);
+
+                        Log.i(TAG, "run: call c++"  );
+                        Log.i(TAG, "" + yuvBytes[0] + "\n" +
+                                yuvBytes[1]+ "\n" +
+                                yuvBytes[2]+ "\n" +
+                                rgbBytes+ "\n" +
+                                previewWidth+ "\n" +
+                                previewHeight+ "\n" +
+                                yRowStride+ "\n" +
+                                uvRowStride+ "\n" +
+                                uvPixelStride);
                         ImageUtils.convertYUV420ToARGB8888(
                                 yuvBytes[0],
                                 yuvBytes[1],
@@ -201,8 +213,12 @@ public class ImageListener implements OnImageAvailableListener {
                                 yRowStride,
                                 uvRowStride,
                                 uvPixelStride);
+                        Log.i(TAG, "run: call c++ over");
                         bitmap.setPixels(rgbBytes, 0, previewWidth, 0, 0, previewWidth, previewHeight);
+                        Log.i(TAG, "run: setPixels");
+                        Log.i(TAG, "run:call back"  + Thread.currentThread().getName());
                         fragment.setResult(ids, bitmap);
+                        computeSuccess= false;
                     }
                 });
     }
