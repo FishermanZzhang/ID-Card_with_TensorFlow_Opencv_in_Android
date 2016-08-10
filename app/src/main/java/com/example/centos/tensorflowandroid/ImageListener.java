@@ -87,7 +87,7 @@ public class ImageListener implements OnImageAvailableListener {
     @Override
     public void onImageAvailable(final ImageReader reader) {
         //backgroundHandler.post(new ImageSaver(reader.acquireNextImage(), mFile));
-        Log.i(TAG, "onImageAvailable: 当前线程---->" + Thread.currentThread().getName());
+//        Log.i(TAG, "onImageAvailable: 当前线程---->" + Thread.currentThread().getName());
         image = null;
         try {
             image = reader.acquireLatestImage();
@@ -162,7 +162,7 @@ public class ImageListener implements OnImageAvailableListener {
                 new Runnable() {
                     @Override
                     public void run() {
-                        Log.i(TAG, "onImageAvailable: 当前线程2---->" + Thread.currentThread().getName());
+//                        Log.i(TAG, "onImageAvailable: 当前线程2---->" + Thread.currentThread().getName());
                         //final List<Classifier.Recognition> results = tensorflow.recognizeImage(croppedBitmap);
 
                         //LOGGER.v("%d results", results.size());

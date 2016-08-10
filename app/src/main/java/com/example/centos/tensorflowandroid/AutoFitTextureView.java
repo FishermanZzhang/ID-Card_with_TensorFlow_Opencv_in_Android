@@ -12,6 +12,8 @@ public class AutoFitTextureView  extends  TextureView{
     private static  final String TAG = "AutoFitTextureView";
     private static int ratioWidth = 0;
     private static int ratioHeight = 0;
+    private int measureWidth = 0;
+    private int measureHeight = 0;
 
     public AutoFitTextureView(final Context context) {
         this(context, null);
@@ -55,9 +57,19 @@ public class AutoFitTextureView  extends  TextureView{
 //            if (width < height * ratioWidth / ratioHeight) {
 //                setMeasuredDimension(width, width * ratioHeight / ratioWidth);
 //            } else {
-                setMeasuredDimension(height * ratioWidth / ratioHeight, height);
+            measureWidth = height * ratioWidth / ratioHeight;
+            measureHeight = height;
+                setMeasuredDimension(measureWidth, measureHeight);
 //            }
         }
+    }
+
+    public int getMeasureWidth() {
+        return measureWidth;
+    }
+
+    public int getMeasureHeight() {
+        return measureHeight;
     }
 }
 

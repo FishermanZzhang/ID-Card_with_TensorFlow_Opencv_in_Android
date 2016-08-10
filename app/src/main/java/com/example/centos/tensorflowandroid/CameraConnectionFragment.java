@@ -44,6 +44,8 @@ import android.view.Surface;
 import android.view.TextureView;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.ViewTreeObserver;
+import android.widget.RelativeLayout;
 import android.widget.Toast;
 
 import java.io.File;
@@ -214,6 +216,8 @@ public class CameraConnectionFragment extends Fragment {
      */
     private File mFile;
 
+    private PreviewBorderView mPreviewBorderView;
+
     /**
      * Shows a {@link Toast} on the UI thread.
      *
@@ -246,9 +250,10 @@ public class CameraConnectionFragment extends Fragment {
     private static Size chooseOptimalSize(
             final Size[] choices, final int width, final int height, final Size aspectRatio) {
         // Collect the supported resolutions that are at least as big as the preview Surface
+        Log.e(TAG, "chooseOptimalSize: minimum size = " + width + "x" + height );
         final List<Size> bigEnough = new ArrayList<Size>();
         for (final Size option : choices) {
-            if (option.getHeight() >= MINIMUM_PREVIEW_SIZE && option.getWidth() >= MINIMUM_PREVIEW_SIZE) {
+            if (option.getHeight() <= height && option.getWidth() <= width) {
                 //LOGGER.i("Adding size: " + option.getWidth() + "x" + option.getHeight());
                 bigEnough.add(option);
             } else {
@@ -258,7 +263,7 @@ public class CameraConnectionFragment extends Fragment {
 
         // Pick the smallest of those, assuming we found any
         if (bigEnough.size() > 0) {
-            final Size chosenSize = Collections.min(bigEnough, new CompareSizesByArea());
+            final Size chosenSize = Collections.max(bigEnough, new CompareSizesByArea());
             //LOGGER.i("Chosen size: " + chosenSize.getWidth() + "x" + chosenSize.getHeight());
             return chosenSize;
         } else {
@@ -280,6 +285,7 @@ public class CameraConnectionFragment extends Fragment {
     @Override
     public void onViewCreated(final View view, final Bundle savedInstanceState) {
         textureView = (AutoFitTextureView) view.findViewById(R.id.texture);
+        mPreviewBorderView = (PreviewBorderView)view.findViewById(R.id.borderview);
         //scoreView = (RecognitionScoreView) view.findViewById(R.id.results);
     }
 
@@ -359,6 +365,18 @@ public class CameraConnectionFragment extends Fragment {
                 } else {
                     textureView.setAspectRatio(previewSize.getHeight(), previewSize.getWidth());
                 }
+                //设置预览框尺寸
+                textureView.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
+                    @Override
+                    public void onGlobalLayout() {
+                        textureView.getViewTreeObserver().removeOnGlobalLayoutListener(this);
+                        RelativeLayout.LayoutParams borderViewParams = (RelativeLayout.LayoutParams) mPreviewBorderView.getLayoutParams();
+                        borderViewParams.width = textureView.getMeasureWidth();
+                        borderViewParams.height = textureView.getMeasureHeight();
+                        mPreviewBorderView.setLayoutParams(borderViewParams);
+                        mPreviewBorderView.setSize(textureView.getMeasureWidth(), textureView.getMeasureHeight());
+                    }
+                });
 
                 CameraConnectionFragment.this.cameraId = cameraId;
                 return;
