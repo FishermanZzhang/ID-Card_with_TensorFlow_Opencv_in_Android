@@ -100,7 +100,7 @@ public class PreviewBorderView extends SurfaceView implements SurfaceHolder.Call
         try {
             this.mCanvas = this.mHolder.lockCanvas();
             this.mCanvas.drawARGB(100, 0, 0, 0);
-            float widthHeightRatio = 0.75f;//框框的宽高比
+            float widthHeightRatio = 0.625f;//框框的宽高比
             int rectHeight = this.mScreenH * 3 / 4;//框框的高度
             int rectWidth = (int) (rectHeight / widthHeightRatio);//框框的宽度
             int leftTopPointY = this.mScreenH / 8;//左上角Y坐标
