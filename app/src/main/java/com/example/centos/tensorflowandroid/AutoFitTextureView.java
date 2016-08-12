@@ -8,8 +8,9 @@ import android.content.Context;
 import android.util.AttributeSet;
 import android.view.TextureView;
 public class AutoFitTextureView  extends  TextureView{
-    private int ratioWidth = 0;
-    private int ratioHeight = 0;
+    private static  final String TAG = "AutoFitTextureView";
+    private static int ratioWidth = 0;
+    private static int ratioHeight = 0;
 
     public AutoFitTextureView(final Context context) {
         this(context, null);
