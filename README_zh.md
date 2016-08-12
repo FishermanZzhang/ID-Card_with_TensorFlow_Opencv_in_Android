@@ -79,3 +79,5 @@ include /home/centos/sdk/OpenCV-android-sdk/sdk/native/jni/OpenCV.mk
 ![running](./img/running.png)
 ###RESULT
 ![my Id](./img/result.png)
+###NEW UI
+![new ui](./img/newUI.png)
