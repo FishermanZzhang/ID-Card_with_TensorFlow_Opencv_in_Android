@@ -1,1 +1,0 @@
-# ID-Card_with_TensorFlow_Opencv_in_Android

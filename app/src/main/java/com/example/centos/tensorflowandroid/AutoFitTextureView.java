@@ -6,11 +6,14 @@ package com.example.centos.tensorflowandroid;
 
 import android.content.Context;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.TextureView;
 public class AutoFitTextureView  extends  TextureView{
     private static  final String TAG = "AutoFitTextureView";
     private static int ratioWidth = 0;
     private static int ratioHeight = 0;
+    private int measureWidth = 0;
+    private int measureHeight = 0;
 
     public AutoFitTextureView(final Context context) {
         this(context, null);
@@ -46,15 +49,27 @@ public class AutoFitTextureView  extends  TextureView{
         super.onMeasure(widthMeasureSpec, heightMeasureSpec);
         final int width = MeasureSpec.getSize(widthMeasureSpec);
         final int height = MeasureSpec.getSize(heightMeasureSpec);
+        Log.i(TAG, "onMeasure: " + "width" + width + "height" + height);
+        Log.i(TAG, "onMeasure: " + "ratioWidth" + ratioWidth + "ratioHeight" + ratioHeight);
         if (0 == ratioWidth || 0 == ratioHeight) {
             setMeasuredDimension(width, height);
         } else {
 //            if (width < height * ratioWidth / ratioHeight) {
 //                setMeasuredDimension(width, width * ratioHeight / ratioWidth);
 //            } else {
-                setMeasuredDimension(height * ratioWidth / ratioHeight, height);
+            measureWidth = height * ratioWidth / ratioHeight;
+            measureHeight = height;
+                setMeasuredDimension(measureWidth, measureHeight);
 //            }
         }
+    }
+
+    public int getMeasureWidth() {
+        return measureWidth;
+    }
+
+    public int getMeasureHeight() {
+        return measureHeight;
     }
 }
 

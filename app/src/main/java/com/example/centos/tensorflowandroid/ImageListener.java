@@ -18,6 +18,7 @@ import android.util.Log;
 import java.nio.ByteBuffer;
 
 public class ImageListener implements OnImageAvailableListener {
+    public boolean isAfOver = false;
     private static final String TAG = "ImageListener";
     private Handler handler;
     private CameraConnectionFragment fragment;
@@ -76,7 +77,7 @@ public class ImageListener implements OnImageAvailableListener {
         }
         int tsum = 0;
         for(int i = 0; i < idslen - 1; ++i){
-            if(ids.charAt(i) == 'X') return false;
+            if(ids.charAt(i) == 'X' || ids.charAt(i) == '*') return false;
             tsum += Wi[i] * (ids.charAt(i) - '0');
         }
         tsum %= 11;
@@ -87,14 +88,14 @@ public class ImageListener implements OnImageAvailableListener {
     @Override
     public void onImageAvailable(final ImageReader reader) {
         //backgroundHandler.post(new ImageSaver(reader.acquireNextImage(), mFile));
-        Log.i(TAG, "onImageAvailable: 当前线程---->" + Thread.currentThread().getName());
+//        Log.i(TAG, "onImageAvailable: 当前线程---->" + Thread.currentThread().getName());
         image = null;
         try {
             image = reader.acquireLatestImage();
             if (image == null) {
                 return;
             }
-            if (computing || computeSuccess) {
+            if (computing || computeSuccess || !isAfOver) {
                 image.close();
                 return;
             }
@@ -162,7 +163,7 @@ public class ImageListener implements OnImageAvailableListener {
                 new Runnable() {
                     @Override
                     public void run() {
-                        Log.i(TAG, "onImageAvailable: 当前线程2---->" + Thread.currentThread().getName());
+//                        Log.i(TAG, "onImageAvailable: 当前线程2---->" + Thread.currentThread().getName());
                         //final List<Classifier.Recognition> results = tensorflow.recognizeImage(croppedBitmap);
 
                         //LOGGER.v("%d results", results.size());
@@ -176,12 +177,15 @@ public class ImageListener implements OnImageAvailableListener {
                         //System.out.println("bitmap height" + bitmap.getHeight());
                         //String ids = tensorflow.classifyImageBmp(bitmap);
                         //String ids = tensorflow.classifyImageBmp(bytes, image.getWidth(), image.getHeight());
-                        String ids = tensorflow.classifyImageYUV(yuvBytes[0],yuvBytes[1], yuvBytes[2],
+                        String idname = tensorflow.classifyImageYUV(yuvBytes[0],yuvBytes[1], yuvBytes[2],
                                 previewWidth,previewHeight,
                                 yRowStride, uvRowStride, uvPixelStride);
-                        System.out.println(ids);
+                        //System.out.println(idname);
+
                         computing = false;
-                        if (!isLegitimateids(ids)) {
+                        String []ids = idname.split(" ");
+                        if(ids.length < 2) return;
+                        if (!isLegitimateids(ids[0])) {
                             return;
                         }
                         computeSuccess = true;
@@ -217,7 +221,7 @@ public class ImageListener implements OnImageAvailableListener {
                         bitmap.setPixels(rgbBytes, 0, previewWidth, 0, 0, previewWidth, previewHeight);
                         //Log.i(TAG, "run: setPixels");
                         //Log.i(TAG, "run:call back"  + Thread.currentThread().getName());
-                        fragment.setResult(ids, bitmap);
+                        fragment.setResult(idname, bitmap);
                         //computeSuccess= false;
                     }
                 });

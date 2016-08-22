@@ -12,11 +12,22 @@ include /home/centos/sdk/OpenCV-android-sdk/sdk/native/jni/OpenCV.mk
 include /home/centos/sdk/tensorflow-sdk/sdk/native/jni/tensorflow_android.mk
 
 LOCAL_SRC_FILES := ./tensorflow_jni.cc \
+	./src/pcl/ocr/id/CardInfo.cpp \
+	./src/pcl/ocr/id/classifier.cpp \
+	./src/pcl/ocr/id/Detector.cpp \
+	./src/pcl/ocr/id/ERState.cpp \
+	./src/pcl/ocr/id/Divider.cpp \
+	./src/pcl/ocr/id/Engine.cpp \
+	./src/pcl/ocr/id/IDDecoder.cpp \
+	./src/pcl/ocr/id/ImageUtil.cpp \
+	./src/pcl/ocr/id/Rectifier.cpp \
+	./src/pcl/ocr/id/Param.cpp \
 	./jni_utils.cc \
-	./LSDDetectEdge.cc \
-	./DetectEdge.cc \
-	./yuv2rgb.cc \
-	./imageutils_jni.cc
+	./imageutils_jni.cc \
+	./yuv2rgb.cc
+
+
+LOCAL_C_INCLUDES += $(LOCAL_PATH)/include
 
 LOCAL_MODULE := tensorflow_ocr
 LOCAL_ARM_MODE  := arm

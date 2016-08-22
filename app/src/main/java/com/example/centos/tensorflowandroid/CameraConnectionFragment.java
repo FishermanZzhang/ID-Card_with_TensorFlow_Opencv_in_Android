@@ -44,6 +44,8 @@ import android.view.Surface;
 import android.view.TextureView;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.ViewTreeObserver;
+import android.widget.RelativeLayout;
 import android.widget.Toast;
 
 import java.io.File;
@@ -64,7 +66,7 @@ public class CameraConnectionFragment extends Fragment {
      * The camera preview size will be chosen to be the smallest frame by pixel size capable of
      * containing a DESIRED_SIZE x DESIRED_SIZE square.
      */
-    private static final int MINIMUM_PREVIEW_SIZE = 480;
+    private static final int MINIMUM_PREVIEW_SIZE = 960;
 
     //private RecognitionScoreView scoreView;
 
@@ -214,6 +216,8 @@ public class CameraConnectionFragment extends Fragment {
      */
     private File mFile;
 
+    private PreviewBorderView mPreviewBorderView;
+
     /**
      * Shows a {@link Toast} on the UI thread.
      *
@@ -246,9 +250,10 @@ public class CameraConnectionFragment extends Fragment {
     private static Size chooseOptimalSize(
             final Size[] choices, final int width, final int height, final Size aspectRatio) {
         // Collect the supported resolutions that are at least as big as the preview Surface
+        Log.e(TAG, "chooseOptimalSize: minimum size = " + width + "x" + height );
         final List<Size> bigEnough = new ArrayList<Size>();
         for (final Size option : choices) {
-            if (option.getHeight() >= MINIMUM_PREVIEW_SIZE && option.getWidth() >= MINIMUM_PREVIEW_SIZE) {
+            if (option.getHeight() <= height && option.getWidth() <= width) {
                 //LOGGER.i("Adding size: " + option.getWidth() + "x" + option.getHeight());
                 bigEnough.add(option);
             } else {
@@ -258,7 +263,7 @@ public class CameraConnectionFragment extends Fragment {
 
         // Pick the smallest of those, assuming we found any
         if (bigEnough.size() > 0) {
-            final Size chosenSize = Collections.min(bigEnough, new CompareSizesByArea());
+            final Size chosenSize = Collections.max(bigEnough, new CompareSizesByArea());
             //LOGGER.i("Chosen size: " + chosenSize.getWidth() + "x" + chosenSize.getHeight());
             return chosenSize;
         } else {
@@ -280,6 +285,7 @@ public class CameraConnectionFragment extends Fragment {
     @Override
     public void onViewCreated(final View view, final Bundle savedInstanceState) {
         textureView = (AutoFitTextureView) view.findViewById(R.id.texture);
+        mPreviewBorderView = (PreviewBorderView)view.findViewById(R.id.borderview);
         //scoreView = (RecognitionScoreView) view.findViewById(R.id.results);
     }
 
@@ -359,6 +365,18 @@ public class CameraConnectionFragment extends Fragment {
                 } else {
                     textureView.setAspectRatio(previewSize.getHeight(), previewSize.getWidth());
                 }
+                //设置预览框尺寸
+                textureView.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
+                    @Override
+                    public void onGlobalLayout() {
+                        textureView.getViewTreeObserver().removeOnGlobalLayoutListener(this);
+                        RelativeLayout.LayoutParams borderViewParams = (RelativeLayout.LayoutParams) mPreviewBorderView.getLayoutParams();
+                        borderViewParams.width = textureView.getMeasureWidth();
+                        borderViewParams.height = textureView.getMeasureHeight();
+                        mPreviewBorderView.setLayoutParams(borderViewParams);
+                        mPreviewBorderView.setSize(textureView.getMeasureWidth(), textureView.getMeasureHeight());
+                    }
+                });
 
                 CameraConnectionFragment.this.cameraId = cameraId;
                 return;
@@ -477,11 +495,25 @@ public class CameraConnectionFragment extends Fragment {
 
     private final CameraCaptureSession.CaptureCallback captureCallback =
             new CameraCaptureSession.CaptureCallback() {
+
+                private void process(CaptureResult result) {
+                    Integer afState = result.get(CaptureResult.CONTROL_AF_STATE);
+                    Log.i(TAG,"afState " + afState);
+                    if (CaptureResult.CONTROL_AF_STATE_PASSIVE_FOCUSED == afState ){
+                        imagelistener.isAfOver = true;
+                        Log.i(TAG,"isAfOver " + true);
+                    }
+                    else{
+                        imagelistener.isAfOver = false;
+                        Log.i(TAG,"isAfOver " + false);
+                    }
+                }
                 @Override
                 public void onCaptureProgressed(
                         final CameraCaptureSession session,
                         final CaptureRequest request,
                         final CaptureResult partialResult) {
+                    process(partialResult);
                 }
 
                 @Override
@@ -489,6 +521,7 @@ public class CameraConnectionFragment extends Fragment {
                         final CameraCaptureSession session,
                         final CaptureRequest request,
                         final TotalCaptureResult result) {
+                    process(result);
                 }
             };
 

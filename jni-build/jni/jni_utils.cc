@@ -63,6 +63,7 @@ namespace {
 	};
 }  // namespace
 
+//namespace ocr {
 bool PortableReadFileToProto(const std::string& file_name,
                              ::google::protobuf::MessageLite* proto) {
 	
@@ -137,3 +138,42 @@ void ReadFileToProto(AAssetManager* const asset_manager,
 	
 	AAsset_close(asset);
 }
+
+/**
+ * <!--  ReadFileToProto():  -->
+ */
+void ReadFileToStrings(AAssetManager* const asset_manager,
+                     const char* const filename,
+                     std::vector<std::string>& terms) {
+
+	if (!IsAsset(filename)) {
+		VLOG(0) << "Opening file: " << filename;
+		//CHECK(PortableReadFileToProto(filename, message));
+		return;
+	}
+
+	CHECK_NOTNULL(asset_manager);
+
+	const char* const asset_filename = filename + strlen(ASSET_PREFIX);
+	AAsset* asset = AAssetManager_open(asset_manager,
+									   asset_filename,
+									   AASSET_MODE_STREAMING);
+	CHECK_NOTNULL(asset);
+
+	std::string term;
+	//size_t fileLength = AAsset_getLength(file);
+	char buffer;
+	std::stringstream ss;
+
+	while (AAsset_read(asset, &buffer, 1) > 0) {
+	    ss << buffer;
+	}
+	while(ss >> term) {
+	    //LOG(INFO) << term;
+	    terms.push_back(term);
+	}
+
+	AAsset_close(asset);
+}
+
+//}

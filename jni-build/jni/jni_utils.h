@@ -24,18 +24,30 @@ limitations under the License.
 
 #include "tensorflow/core/platform/types.h"
 
+
 namespace google {
 namespace protobuf {
 class MessageLite;
 }  // google
 }  // protobuf
 
-class AAssetManager;
 
+
+
+class AAssetManager;
+//namespace ocr {
 bool PortableReadFileToProto(const std::string& file_name,
                              ::google::protobuf::MessageLite* proto);
 
 void ReadFileToProto(AAssetManager* const asset_manager,
     const char* const filename, google::protobuf::MessageLite* message);
+
+void ReadFileToStrings(AAssetManager* const mgr,
+    const char* const filename, std::vector<std::string>& terms);
+
+
+
+
+//}
 
 #endif  // ORG_TENSORFLOW_JNI_JNI_UTILS_H_
