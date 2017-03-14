@@ -75,9 +75,14 @@ include /home/centos/sdk/OpenCV-android-sdk/sdk/native/jni/OpenCV.mk
 
 #examples
 手机截图，红米3. Android 5 以上设备均支持
-###RUNNING
-![running](./img/running.png)
 ###RESULT
-![my Id](./img/result.png)
+![my Id](./img/1000000.png)
+![result](./img/1000001.png)
+![result](./img/1000002.png)
+![result](./img/1000003.png)
+![result](./img/1000004.png)
+![result](./img/1000005.png)
+![result](./img/1000006.png)
+more result in img/
 ###NEW UI
 ![new ui](./img/newUI.png)
