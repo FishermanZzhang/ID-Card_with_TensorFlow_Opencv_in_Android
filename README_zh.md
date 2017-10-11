@@ -1,6 +1,6 @@
 ID-Card_with_TensorFlow_Opencv_in_Android
 ==============================
-##涉及技术或者开源库
+## 涉及技术或者开源库
 ![t](./img/t.png)
 
 # Environment
@@ -46,12 +46,12 @@ config_setting(
 ```
 
 
-####2 下载[opencv-sdk](http://sourceforge.net/projects/opencvlibrary/files/opencv-android/3.1.0/OpenCV-3.1.0-android-sdk.zip/download)
+#### 2 下载[opencv-sdk](http://sourceforge.net/projects/opencvlibrary/files/opencv-android/3.1.0/OpenCV-3.1.0-android-sdk.zip/download)
 
-####3 仔细阅读Opencv.mk 和 tensorflow_android.mk
+#### 3 仔细阅读Opencv.mk 和 tensorflow_android.mk
 tensorflow_android.mk这个是我写的，可能有bug,在arm平台是没有问题的
 
-####4 [Android.mk](./jni-build/jni/Android.mk)
+#### 4 [Android.mk](./jni-build/jni/Android.mk)
 修改 opencv-sdk 和 tensorflow-sdk .mk 的包含目录
 ```
 #this is my path, change it to yours
@@ -66,16 +66,16 @@ include /home/centos/sdk/OpenCV-android-sdk/sdk/native/jni/OpenCV.mk
 ![这是我的Android Studio](./img/as.png)
 
 执行ndk-build. 这里使用make包装了一下。真正的命令可以在[Makefile](./jni-build/Makefile)中查看
-####1 open Terminal
-####2 cd jni-build
-####3 make
-####4 make install
+#### 1 open Terminal
+#### 2 cd jni-build
+#### 3 make
+#### 4 make install
 
 ![执行过程](./img/command.png)
 
-#examples
+# examples
 手机截图，红米3. Android 5 以上设备均支持
-###RESULT
+### RESULT
 ![my Id](./img/1000000.png)
 ![result](./img/1000001.png)
 ![result](./img/1000002.png)
@@ -84,6 +84,6 @@ include /home/centos/sdk/OpenCV-android-sdk/sdk/native/jni/OpenCV.mk
 ![result](./img/1000005.png)
 ![result](./img/1000006.png)
 
-####more result in img/
-###NEW UI
+#### more result in img/
+### NEW UI
 ![new ui](./img/newUI.png)
