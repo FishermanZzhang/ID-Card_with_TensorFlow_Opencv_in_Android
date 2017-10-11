@@ -4,15 +4,15 @@ ID-Card_with_TensorFlow_Opencv_in_Android
 ![t](./img/t.png)
 
 # Environment
-####1 centos 7
-####2 [android studio](http://pan.baidu.com/s/1o8yB1wu)
-####3 [NDK r10e](http://pan.baidu.com/s/1pLlImtt)(推荐) or [NDK r12](http://pan.baidu.com/s/1eSr0kLW)
-####4 SDK
-####5 JDK 1.8
+#### 1 centos 7
+#### 2 [android studio](http://pan.baidu.com/s/1o8yB1wu)
+#### 3 [NDK r10e](http://pan.baidu.com/s/1pLlImtt)(推荐) or [NDK r12](http://pan.baidu.com/s/1eSr0kLW)
+#### 4 SDK
+#### 5 JDK 1.8
 
 
 # download tensorflow-sdk and opencv-sdk
-####1 可以直接下载[tensorflow-sdk](http://pan.baidu.com/s/1jHQTDkE) 
+#### 1 可以直接下载[tensorflow-sdk](http://pan.baidu.com/s/1jHQTDkE) 
 也可以自己编译tensorflow android "static lib". 步骤如下：
 
 按照[tensorflow_android](https://github.com/tensorflow/tensorflow/blob/master/tensorflow/examples/android/README.md)说明执行，并安装bazel等。
